@@ -13,6 +13,9 @@ inputs:
   operation:
     description: 'Create|Read|Update|Delete'
     required: true
+  id:
+    description: 'Honeycomb marker id for update and delete operation.'
+    required: false
   type:
     description: 'A string grouping similar Markers, eg ‘deploys’. All Markers of the same type will appear in the same color on the graph.'
     required: true

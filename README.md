@@ -7,7 +7,7 @@ Development in progress. Supported operations:
 
 - [x] Create
 - [ ] Read
-- [ ] Update
+- [x] Update
 - [ ] Delete
 
 ## Usage

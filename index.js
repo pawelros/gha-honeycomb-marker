@@ -3,6 +3,7 @@ const core = require('@actions/core');
 const axios = require('axios');
 
 class HoneyCombMarkerRequestDto {
+    id;
     dataset;
     type;
     message;
@@ -10,7 +11,8 @@ class HoneyCombMarkerRequestDto {
     end_time;
     url;
 
-    constructor(dataset, type, message, startTime, endTime, url) {
+    constructor(id, dataset, type, message, startTime, endTime, url) {
+        this.id = id || null;
         this.dataset = dataset || null;
         this.type = type || null;
         this.message = message || null;
@@ -20,8 +22,34 @@ class HoneyCombMarkerRequestDto {
     }
 }
 
+function setOutputFrom(response) {
+    console.log(`Marker ${JSON.stringify(requestDto)}`);
+    console.log(`${response.status} ${response.statusText}`);
+
+    core.setOutput('id', response.data.id);
+    core.setOutput('created_at', response.data.created_at);
+    core.setOutput('updated_at', response.data.updated_at);
+    core.setOutput('message', response.data.message);
+    core.setOutput('start_time', response.data.start_time);
+
+    if (response.data.hasOwnProperty('end_time')) {
+        core.setOutput('end_time', response.data.start_time);
+    }
+}
+
+function setFailedFrom(error) {
+    if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+
+        core.setFailed(error.response.data.error);
+    }
+}
+
 try {
     const apiKey = core.getInput('api-key');
+    const id = core.getInput('id');
     const dataset = core.getInput('dataset');
     const operation = core.getInput('operation');
     const type = core.getInput('type');
@@ -30,7 +58,7 @@ try {
     const endTime = core.getInput('end_time');
     const url = core.getInput('url');
 
-    const requestDto = new HoneyCombMarkerRequestDto(dataset, type, message, startTime, endTime, url);
+    const requestDto = new HoneyCombMarkerRequestDto(id, dataset, type, message, startTime, endTime, url);
 
     let axios_config = {
         headers: {
@@ -43,29 +71,21 @@ try {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
                 .then(function (response) {
-                    console.log(`Marker ${JSON.stringify(requestDto)}`);
-                    console.log(`${response.status} ${response.statusText}`);
-
-                    core.setOutput('id', response.data.id);
-                    core.setOutput('created_at', response.data.created_at);
-                    core.setOutput('updated_at', response.data.updated_at);
-                    core.setOutput('message', response.data.message);
-
-                    core.setOutput('start_time', response.data.start_time);
-
-                    if (response.data.hasOwnProperty('end_time')) {
-                        core.setOutput('end_time', response.data.start_time);
-
-                    }
+                    setOutputFrom(response);
                 })
                 .catch(function (error) {
-                    if (error.response) {
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
+                    setFailedFrom(error);
+                });
+            break;
+        case 'update':
+            if (!requestDto.id) throw new Error('Honeycomb marker `id` is required for update operation type.')
 
-                        core.setFailed(error.response.data.error);
-                    }
+            axios.put(`https://api.honeycomb.io/1/markers/${dataset}/${requestDto.id}`, requestDto, axios_config)
+                .then(function (response) {
+                    setOutputFrom(response);
+                })
+                .catch(function (error) {
+                    setFailedFrom(error);
                 });
             break;
         default:
