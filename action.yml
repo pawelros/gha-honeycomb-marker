@@ -22,10 +22,10 @@ inputs:
   message:
     description: 'A string describing this specific Marker. This string will appear above the Marker line on a graph.'
     required: true
-  start_time:
+  start-time:
     description: 'Optional. Indicates the time the Marker should be placed. If missing, defaults to the time the request arrives at the API. Expressed in Unix Time, aka seconds since the epoch.'
     required: false
-  end_time:
+  end-time:
     description: Optional. Specifying end time will allow you to record a Marker representing a time range, such as a 5 minute deploy. This range will be highlighted when rendering a graph. Expressed in Unix Time, aka seconds since the epoch.
     required: false
   url:
@@ -34,13 +34,13 @@ inputs:
 outputs:
   id:
     description: 'Marker ID'
-  created_at:
+  created-at:
     description: 'Created At timestamp'
-  updated_at:
+  updated-at:
     description: 'Updated At timestamp'
-  start_time:
+  start-time:
     description: 'Epoch start_time'
-  end_time:
+  end-time:
     description: 'Epoch end_time'
   message:
     description: 'Marker message'

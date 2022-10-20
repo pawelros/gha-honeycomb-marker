@@ -27,13 +27,13 @@ function setOutputFrom(response) {
     console.log(`${response.status} ${response.statusText}`);
 
     core.setOutput('id', response.data.id);
-    core.setOutput('created_at', response.data.created_at);
-    core.setOutput('updated_at', response.data.updated_at);
+    core.setOutput('created-at', response.data.created_at);
+    core.setOutput('updated-at', response.data.updated_at);
     core.setOutput('message', response.data.message);
-    core.setOutput('start_time', response.data.start_time);
+    core.setOutput('start-time', response.data.start_time);
 
-    if (response.data.hasOwnProperty('end_time')) {
-        core.setOutput('end_time', response.data.start_time);
+    if (response.data.hasOwnProperty('end-time')) {
+        core.setOutput('end-time', response.data.start_time);
     }
 }
 
@@ -54,8 +54,8 @@ try {
     const operation = core.getInput('operation');
     const type = core.getInput('type');
     const message = core.getInput('message');
-    const startTime = core.getInput('start_time');
-    const endTime = core.getInput('end_time');
+    const startTime = core.getInput('start-time');
+    const endTime = core.getInput('end-time');
     const url = core.getInput('url');
 
     const requestDto = new HoneyCombMarkerRequestDto(id, dataset, type, message, startTime, endTime, url);
