@@ -22,31 +22,6 @@ class HoneyCombMarkerRequestDto {
     }
 }
 
-function setOutputFrom(response) {
-    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
-    console.log(`${response.status} ${response.statusText}`);
-
-    core.setOutput('id', response.data.id);
-    core.setOutput('created-at', response.data.created_at);
-    core.setOutput('updated-at', response.data.updated_at);
-    core.setOutput('message', response.data.message);
-    core.setOutput('start-time', response.data.start_time);
-
-    if (response.data.hasOwnProperty('end-time')) {
-        core.setOutput('end-time', response.data.start_time);
-    }
-}
-
-function setFailedFrom(error) {
-    if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-
-        core.setFailed(error.response.data.error);
-    }
-}
-
 try {
     const apiKey = core.getInput('api-key');
     const id = core.getInput('id');
@@ -94,4 +69,29 @@ try {
 } catch (error) {
     console.log(error)
     core.setFailed(error.message);
+}
+
+function setOutputFrom(response) {
+    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
+    console.log(`${response.status} ${response.statusText}`);
+
+    core.setOutput('id', response.data.id);
+    core.setOutput('created-at', response.data.created_at);
+    core.setOutput('updated-at', response.data.updated_at);
+    core.setOutput('message', response.data.message);
+    core.setOutput('start-time', response.data.start_time);
+
+    if (response.data.hasOwnProperty('end-time')) {
+        core.setOutput('end-time', response.data.start_time);
+    }
+}
+
+function setFailedFrom(error) {
+    if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+
+        core.setFailed(error.response.data.error);
+    }
 }
