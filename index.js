@@ -43,21 +43,18 @@ try {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
                 .then(function (response) {
-                    console.log(`${response.status} ${response.statusText}`)
-                    if (response.status === 201) {
-                        core.setOutput('id', response.data.id);
-                        core.setOutput('created_at', response.data.created_at);
-                        core.setOutput('updated_at', response.data.updated_at);
-                        core.setOutput('message', response.data.message);
+                    console.log(`${response.status} ${response.statusText}`);
 
-                        core.setOutput('start_time', response.data.start_time);
+                    core.setOutput('id', response.data.id);
+                    core.setOutput('created_at', response.data.created_at);
+                    core.setOutput('updated_at', response.data.updated_at);
+                    core.setOutput('message', response.data.message);
 
-                        if (response.data.hasOwnProperty('end_time')) {
-                            core.setOutput('end_time', response.data.start_time);
-                        }
-                    }
-                    else {
-                        throw new Error(`${response.status} ${response.statusText}`)
+                    core.setOutput('start_time', response.data.start_time);
+
+                    if (response.data.hasOwnProperty('end_time')) {
+                        core.setOutput('end_time', response.data.start_time);
+
                     }
                 })
                 .catch(function (error) {
