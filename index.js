@@ -48,7 +48,7 @@ try {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
                 .then(function (response) {
-                    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
+                    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${JSON.stringify(response.data)}`);
                     console.log(`${response.status} ${response.statusText}`);
 
                     core.setOutput('id', response.data.id);
@@ -68,10 +68,11 @@ try {
             break;
         case 'update':
             if (!requestDto.id) throw new Error('Honeycomb marker `id` is required for update operation type.')
+            if (!requestDto.dataset) throw new Error('Honeycomb marker `dataset` is required for update operation type.')
 
             axios.put(`https://api.honeycomb.io/1/markers/${dataset}/${requestDto.id}`, requestDto, axios_config)
                 .then(function (response) {
-                    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
+                    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${JSON.stringify(response.data)}`);
                     console.log(`${response.status} ${response.statusText}`);
 
                     core.setOutput('id', response.data.id);
