@@ -60,17 +60,20 @@ try {
                         throw new Error(`${response.status} ${response.statusText}`)
                     }
                 })
+                .catch(function (error) {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+
+                        core.setFailed(error.response.data);
+                    }
+                });
             break;
         default:
             throw new Error(`Operation ${operation} is not supported.`);
     }
 } catch (error) {
-    if (error.hasOwnProperty('data')) {
-        console.log(error.data)
-        core.setFailed(error.data);
-    }
-    else {
-        console.log(error)
-        core.setFailed(error.message);
-    }
+    console.log(error)
+    core.setFailed(error.message);
 }
