@@ -66,7 +66,7 @@ try {
                         console.log(error.response.status);
                         console.log(error.response.headers);
 
-                        core.setFailed(error.response.data);
+                        core.setFailed(error.response.data.error);
                     }
                 });
             break;
