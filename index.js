@@ -47,18 +47,47 @@ try {
     switch (operation.toLowerCase()) {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
-                .then(function(response){
-                    var x = self.setOutputFromResponse.bind(self,response);
-                    x();
+                .then(function (response) {
+                    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
+                    console.log(`${response.status} ${response.statusText}`);
+
+                    core.setOutput('id', response.data.id);
+                    core.setOutput('created-at', response.data.created_at);
+                    core.setOutput('updated-at', response.data.updated_at);
+                    core.setOutput('message', response.data.message);
+                    core.setOutput('start-time', response.data.start_time);
+                    core.setOutput('end-time', response.data.start_time);
                 })
-                .catch(setFailedFromError);
+                .catch(function (error) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+
+                    core.setFailed(error.response.data.error);
+                });
             break;
         case 'update':
             if (!requestDto.id) throw new Error('Honeycomb marker `id` is required for update operation type.')
 
             axios.put(`https://api.honeycomb.io/1/markers/${dataset}/${requestDto.id}`, requestDto, axios_config)
-                .then(setOutputFromResponse)
-                .catch(setFailedFromError);
+                .then(function (response) {
+                    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
+                    console.log(`${response.status} ${response.statusText}`);
+
+                    core.setOutput('id', response.data.id);
+                    core.setOutput('created-at', response.data.created_at);
+                    core.setOutput('updated-at', response.data.updated_at);
+                    core.setOutput('message', response.data.message);
+                    core.setOutput('start-time', response.data.start_time);
+                    core.setOutput('end-time', response.data.start_time);
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+
+                    core.setFailed(error.response.data.error);
+                });
             break;
         default:
             throw new Error(`Operation ${operation} is not supported.`);
@@ -66,32 +95,4 @@ try {
 } catch (error) {
     console.log(error)
     core.setFailed(error.message);
-}
-
-function setOutputFromResponse(response) {
-    
-    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
-    console.log(`${response.status} ${response.statusText}`);
-
-    core.setOutput('id', response.data.id);
-    core.setOutput('created-at', response.data.created_at);
-    core.setOutput('updated-at', response.data.updated_at);
-    core.setOutput('message', response.data.message);
-    core.setOutput('start-time', response.data.start_time);
-
-    if (response.data.hasOwnProperty('end-time')) {
-        core.setOutput('end-time', response.data.start_time);
-    }
-
-    throw new Error('AAAAAAAAAAAA');
-}
-
-function setFailedFromError(error) {
-    if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-
-        core.setFailed(error.response.data.error);
-    }
 }
