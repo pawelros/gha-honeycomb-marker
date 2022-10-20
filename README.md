@@ -47,6 +47,7 @@ Development in progress. Supported operations:
         echo "Deployment has finished."
       shell: bash
     - name: Honeycomb End Marker
+      if: always()
       uses: pawelros/gha-honeycomb-marker@master
       with:
         api-key: ${{secrets.HONEYCOMB_API_KEY}}
