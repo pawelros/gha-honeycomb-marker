@@ -43,7 +43,7 @@ try {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
                 .then(function (response) {
-                    console.log(JSON.stringify(requestDto));
+                    console.log(`Marker ${JSON.stringify(requestDto)}`);
                     console.log(`${response.status} ${response.statusText}`);
 
                     core.setOutput('id', response.data.id);
