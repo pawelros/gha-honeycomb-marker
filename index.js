@@ -45,15 +45,15 @@ try {
     switch (operation.toLowerCase()) {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
-                .then(setOutputFrom(response))
-                .catch(setFailedFrom(error));
+                .then(setOutputFromResponse)
+                .catch(setFailedFromError);
             break;
         case 'update':
             if (!requestDto.id) throw new Error('Honeycomb marker `id` is required for update operation type.')
 
             axios.put(`https://api.honeycomb.io/1/markers/${dataset}/${requestDto.id}`, requestDto, axios_config)
-                .then(setOutputFrom(response))
-                .catch(setFailedFrom(error));
+                .then(setOutputFromResponse)
+                .catch(setFailedFromError);
             break;
         default:
             throw new Error(`Operation ${operation} is not supported.`);
@@ -63,7 +63,7 @@ try {
     core.setFailed(error.message);
 }
 
-function setOutputFrom(response) {
+function setOutputFromResponse(response) {
     console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
     console.log(`${response.status} ${response.statusText}`);
 
@@ -78,7 +78,7 @@ function setOutputFrom(response) {
     }
 }
 
-function setFailedFrom(error) {
+function setFailedFromError(error) {
     if (error.response) {
         console.log(error.response.data);
         console.log(error.response.status);
