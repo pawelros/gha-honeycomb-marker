@@ -38,12 +38,11 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
 typings/
-
+.DS_Store
 # TypeScript cache
 *.tsbuildinfo
 
