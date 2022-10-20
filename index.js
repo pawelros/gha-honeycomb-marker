@@ -42,7 +42,7 @@ try {
     switch (operation.toLowerCase()) {
         case 'create':
 
-            axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
+            axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto)
                 .then(function (response) {
                     console.log(`${response.status} ${response.statusText}`)
                     if (response.status === 201) {
