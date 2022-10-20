@@ -1,0 +1,23 @@
+{
+  "name": "gha-honeycomb-marker",
+  "version": "0.1.0",
+  "description": "Lightweight GitHub Action that lists, creates, updates, and deletes Honeycomb markers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pawelros/gha-honeycomb-marker.git"
+  },
+  "keywords": [
+    "github-actions",
+    "honeycomb"
+  ],
+  "author": "pawelros",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pawelros/gha-honeycomb-marker/issues"
+  },
+  "homepage": "https://github.com/pawelros/gha-honeycomb-marker#readme"
+}
