@@ -11,12 +11,12 @@ class HoneyCombMarkerRequestDto {
     url;
 
     constructor(dataset, type, message, startTime, endTime, url) {
-        this.dataset = dataset;
-        this.type = type;
-        this.message = message;
-        this.start_time = startTime;
-        this.end_time = endTime;
-        this.url = url;
+        this.dataset = dataset || null;
+        this.type = type || null;
+        this.message = message || null;
+        this.start_time = startTime || null;
+        this.end_time = endTime || null;
+        this.url = url || null;
     }
 }
 
