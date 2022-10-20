@@ -16,8 +16,8 @@ class HoneyCombMarkerRequestDto {
         this.dataset = dataset || null;
         this.type = type || null;
         this.message = message || null;
-        this.start_time = startTime || null;
-        this.end_time = endTime || null;
+        this.start_time = parseInt(startTime) || null;
+        this.end_time = parseInt(endTime) || null;
         this.url = url || null;
     }
 }
