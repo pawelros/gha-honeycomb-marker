@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 //const github = require('@actions/github');
+const axios = require('axios').default;
 
 class HoneyCombMarkerRequestDto {
     dataset;
@@ -31,36 +32,36 @@ try {
 
     const requestDto = new HoneyCombMarkerRequestDto(dataset, type, message, startTime, endTime, url);
 
-    const xhr = new XMLHttpRequest();
+    let axios_config = {
+        headers: {
+            "Content-Type": "application/json",
+            "X-Honeycomb-Team": apiKey
+        }
+    }
 
     switch (operation.toLowerCase()) {
         case 'create':
-            xhr.open('POST', `https://api.honeycomb.io/1/markers/${dataset}`, false);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("X-Honeycomb-Team", apiKey);
             const json = JSON.stringify(requestDto)
-            xhr.send(json);
 
-            console.log(`${xhr.status} ${xhr.statusText}`)
-
-            if (xhr.status === 201) {
-                console.log(xhr.responseText);
-
-                response = JSON.parse(xhr.responseText);
-                core.setOutput('id', response.id);
-                core.setOutput('created_at', response.created_at);
-                core.setOutput('updated_at', response.updated_at);
-                core.setOutput('message', response.message);
-
-                core.setOutput('start_time', response.start_time);
-
-                if (response.hasOwnProperty('end_time')) {
-                    core.setOutput('end_time', response.start_time);
-                }
-            }
-            else {
-                throw new Error(`${xhr.status} ${xhr.statusText}`)
-            }
+            axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, json, axios_config)
+                .then(function (response) {
+                    console.log(`${response.status} ${response.statusText}`)
+                    if (response.status === 201) {
+                        core.setOutput('id', response.data.id);
+                        core.setOutput('created_at', response.data.created_at);
+                        core.setOutput('updated_at', response.data.updated_at);
+                        core.setOutput('message', response.data.message);
+        
+                        core.setOutput('start_time', response.data.start_time);
+        
+                        if (response.data.hasOwnProperty('end_time')) {
+                            core.setOutput('end_time', response.data.start_time);
+                        }
+                    }
+                    else {
+                        throw new Error(`${response.status} ${response.statusText}`)
+                    }
+                })         
             break;
         default:
             throw new Error(`Operation ${operation} is not supported.`);
