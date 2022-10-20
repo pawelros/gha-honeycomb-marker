@@ -42,6 +42,7 @@ try {
     switch (operation.toLowerCase()) {
         case 'create':
             console.log(axios);
+            console.log(requestDto);
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto)
                 .then(function (response) {
                     console.log(`${response.status} ${response.statusText}`)
