@@ -45,7 +45,7 @@ try {
     switch (operation.toLowerCase()) {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
-                .then(() => setOutputFromResponse(response))
+                .then((response) => setOutputFromResponse(response))
                 .catch(setFailedFromError);
             break;
         case 'update':
@@ -64,7 +64,7 @@ try {
 }
 
 function setOutputFromResponse(response) {
-    throw new Error('AAAAAAAAAAAA');
+    
     console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
     console.log(`${response.status} ${response.statusText}`);
 
@@ -77,6 +77,8 @@ function setOutputFromResponse(response) {
     if (response.data.hasOwnProperty('end-time')) {
         core.setOutput('end-time', response.data.start_time);
     }
+
+    throw new Error('AAAAAAAAAAAA');
 }
 
 function setFailedFromError(error) {
