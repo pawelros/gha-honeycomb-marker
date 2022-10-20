@@ -42,10 +42,14 @@ try {
         }
     }
 
+    var self = this;
+
     switch (operation.toLowerCase()) {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
-                .then((response) => setOutputFromResponse(response))
+                .then(function(response){
+                    self.setOutputFromResponse.bind(response);
+                })
                 .catch(setFailedFromError);
             break;
         case 'update':
