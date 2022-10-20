@@ -16,7 +16,7 @@ Development in progress. Supported operations:
 
 ```
 - name: Honeycomb Start Marker
-uses: pawelros/gha-honeycomb-marker@master
+uses: pawelros/gha-honeycomb-marker@master # please specify a version tag or sha
 with:
     api-key: ${{secrets.HONEYCOMB_API_KEY}}
     dataset: 'my-dataset'
