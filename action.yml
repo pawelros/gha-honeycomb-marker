@@ -13,6 +13,9 @@ inputs:
   type:
     description: 'A string grouping similar Markers, eg ‘deploys’. All Markers of the same type will appear in the same color on the graph.'
     required: true
+  message:
+    description: 'A string describing this specific Marker. This string will appear above the Marker line on a graph.'
+    required: true
   start_time:
     description: 'Optional. Indicates the time the Marker should be placed. If missing, defaults to the time the request arrives at the API. Expressed in Unix Time, aka seconds since the epoch.'
     required: false
@@ -31,6 +34,8 @@ outputs:
     description: 'Updated At timestamp'
   start_time:
     description: 'Epoch start_time'
+  end_time:
+    description: 'Epoch end_time'
   message:
     description: 'Marker message'
   type:
