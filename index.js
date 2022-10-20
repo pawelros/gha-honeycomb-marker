@@ -46,6 +46,7 @@ try {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
                 .then(function (response) {
+                    console.log('WTF');
                     setOutputFrom(response);
                 })
                 .catch(function (error) {
