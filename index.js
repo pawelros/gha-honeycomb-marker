@@ -64,6 +64,7 @@ try {
 }
 
 function setOutputFromResponse(response) {
+    throw new Error('AAAAAAAAAAAA');
     console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
     console.log(`${response.status} ${response.statusText}`);
 
