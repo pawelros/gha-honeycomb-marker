@@ -51,9 +51,9 @@ try {
                         core.setOutput('created_at', response.data.created_at);
                         core.setOutput('updated_at', response.data.updated_at);
                         core.setOutput('message', response.data.message);
-        
+
                         core.setOutput('start_time', response.data.start_time);
-        
+
                         if (response.data.hasOwnProperty('end_time')) {
                             core.setOutput('end_time', response.data.start_time);
                         }
@@ -61,12 +61,18 @@ try {
                     else {
                         throw new Error(`${response.status} ${response.statusText}`)
                     }
-                })         
+                })
             break;
         default:
             throw new Error(`Operation ${operation} is not supported.`);
     }
 } catch (error) {
-    console.log(error)
-    core.setFailed(error.message);
+    if (error.hasOwnProperty('data')) {
+        console.log(error.data)
+        core.setFailed(error.data);
+    }
+    else {
+        console.log(error)
+        core.setFailed(error.message);
+    }
 }
