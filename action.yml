@@ -1,0 +1,40 @@
+name: 'Honeycomb Marker'
+description: 'Lightweight GitHub Action that lists, creates, updates, and deletes Honeycomb markers'
+inputs:
+  api-key:
+    description: 'Honeycomb API Key. The API key must have the Manage Markers permission.'
+    required: true
+  dataset:
+    description: 'Honecomb dataset'
+    required: true
+  operation:
+    description: 'Create|Read|Update|Delete'
+    required: true
+  type:
+    description: 'A string grouping similar Markers, eg ‘deploys’. All Markers of the same type will appear in the same color on the graph.'
+    required: true
+  start_time:
+    description: 'Optional. Indicates the time the Marker should be placed. If missing, defaults to the time the request arrives at the API. Expressed in Unix Time, aka seconds since the epoch.'
+    required: false
+  end_time:
+    description: Optional. Specifying end time will allow you to record a Marker representing a time range, such as a 5 minute deploy. This range will be highlighted when rendering a graph. Expressed in Unix Time, aka seconds since the epoch.
+    required: false
+  url:
+    description: 'A target for the Marker. If you click on the Marker text, it will take you to this URL. For a deploy, this field might be a link to the build system showing the build log for the version that was deployed.'
+  
+outputs:
+  id:
+    description: 'Marker ID'
+  created_at:
+    description: 'Created At timestamp'
+  updated_at:
+    description: 'Updated At timestamp'
+  start_time:
+    description: 'Epoch start_time'
+  message:
+    description: 'Marker message'
+  type:
+    description: 'Marker type'
+runs:
+  using: 'node16'
+  main: 'index.js'
