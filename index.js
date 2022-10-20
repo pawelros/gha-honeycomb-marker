@@ -23,7 +23,7 @@ class HoneyCombMarkerRequestDto {
 }
 
 function setOutputFrom(response) {
-    console.log(`Marker ${JSON.stringify(requestDto)}`);
+    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${response.data}`);
     console.log(`${response.status} ${response.statusText}`);
 
     core.setOutput('id', response.data.id);
