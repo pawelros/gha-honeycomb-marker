@@ -66,5 +66,6 @@ try {
             throw new Error(`Operation ${operation} is not supported.`);
     }
 } catch (error) {
+    console.log(error)
     core.setFailed(error.message);
 }
