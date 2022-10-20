@@ -1,4 +1,7 @@
 name: 'Honeycomb Marker'
+branding:
+  icon: 'check-circle'
+  color: 'green'
 description: 'Lightweight GitHub Action that lists, creates, updates, and deletes Honeycomb markers'
 inputs:
   api-key:
