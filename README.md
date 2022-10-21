@@ -86,7 +86,7 @@ Development in progress. Supported operations:
         operation: "update"
         id: ${{steps.start_marker.outputs.id}}
         dataset: "my-dataset"
-        type: ${{job.status == 'success' && 'deployment_ok' || deployment_failed }}"
+        type: ${{job.status == 'success' && 'deployment_ok' || 'deployment_failed' }}"
         message: ${{job.status == 'success' && format('Deployment {0} [OK]', github.run_id) || format('Deployment {0} [FAILED]', github.run_id)}}"
         end-time: ${{env.DEPLOY_DONE_TIMESTAMP}}
 ```
