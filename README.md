@@ -37,7 +37,7 @@ Development in progress. Supported operations:
         dataset: 'my-dataset'
         operation: 'create'
         type: 'deployment'
-        message: "Deployment #${{ github.run_id }}"
+        message: "Deployment #${{ github.run_number }}"
         url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
     - name: Deploy my great app
       run: |
@@ -68,8 +68,8 @@ Development in progress. Supported operations:
         api-key: ${{secrets.HONEYCOMB_API_KEY}}
         dataset: "my-dataset"
         operation: "create"
-        type: "deployment"
-        message: "Deployment #${{ github.run_id }}"
+        type: "deployment_in_progress"
+        message: "Deployment #${{ github.run_number }}"
         url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
     - name: Deploy my great app
       run: |
@@ -86,9 +86,13 @@ Development in progress. Supported operations:
         operation: "update"
         id: ${{steps.start_marker.outputs.id}}
         dataset: "my-dataset"
-        type: ${{job.status == 'success' && 'deployment_ok' || 'deployment_failed' }}"
-        message: ${{job.status == 'success' && format('Deployment {0} [OK]', github.run_id) || format('Deployment {0} [FAILED]', github.run_id)}}"
+        type: ${{job.status == 'success' && 'deployment_ok' || 'deployment_failed' }}
+        message: ${{job.status == 'success' && format('Deployment #{0} [OK]', github.run_number) || format('Deployment #{0} [FAILED]', github.run_number)}}
         end-time: ${{env.DEPLOY_DONE_TIMESTAMP}}
 ```
+
+![Advanced marker](advanced_marker.png)
+
+
 
 Action is written in JavaScript as it simplifies the action code and executes faster than a Docker container action, see more [here](https://docs.github.com/en/actions/creating-actions/about-custom-actions#javascript-actions).
