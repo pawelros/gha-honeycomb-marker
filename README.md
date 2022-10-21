@@ -22,7 +22,7 @@ Development in progress. Supported operations:
         dataset: 'my-dataset'
         operation: 'create'
         type: 'deployment'
-        message: 'Hello, this is pawelros testing markers!'
+        message: 'Test marker!'
         url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 ```
 
@@ -37,7 +37,7 @@ Development in progress. Supported operations:
         dataset: 'my-dataset'
         operation: 'create'
         type: 'deployment'
-        message: 'Hello, this is pawelros testing markers!'
+        message: "Deployment #${{ github.run_id }}"
         url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
     - name: Deploy my great app
       run: |
