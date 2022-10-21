@@ -16,7 +16,7 @@ Development in progress. Supported operations:
 
 ```
     - name: Honeycomb Start Marker
-      uses: pawelros/gha-honeycomb-marker@master # please specify a version tag or sha
+      uses: pawelros/gha-honeycomb-marker@v1.0.0 # please specify a version tag or sha
       with:
         api-key: ${{secrets.HONEYCOMB_API_KEY}}
         dataset: 'my-dataset'
@@ -31,7 +31,7 @@ Development in progress. Supported operations:
 ```
     - name: Honeycomb Start Marker
       id: start_marker
-      uses: pawelros/gha-honeycomb-marker@master
+      uses: pawelros/gha-honeycomb-marker@v1.0.0
       with:
         api-key: ${{secrets.HONEYCOMB_API_KEY}}
         dataset: 'my-dataset'
@@ -48,12 +48,46 @@ Development in progress. Supported operations:
       shell: bash
     - name: Honeycomb End Marker
       if: always()
-      uses: pawelros/gha-honeycomb-marker@master
+      uses: pawelros/gha-honeycomb-marker@v1.0.0
       with:
         api-key: ${{secrets.HONEYCOMB_API_KEY}}
         operation: 'update'
         id: ${{steps.start_marker.outputs.id}}
         dataset: 'my-dataset'
+        end-time: ${{env.DEPLOY_DONE_TIMESTAMP}}
+```
+
+
+### A more advanced deployment marker with type dependent on build success (or failure)
+
+```
+    - name: Honeycomb Start Marker
+      id: start_marker
+      uses: pawelros/gha-honeycomb-marker@v1.0.0
+      with:
+        api-key: ${{secrets.HONEYCOMB_API_KEY}}
+        dataset: "my-dataset"
+        operation: "create"
+        type: "deployment"
+        message: "Deployment #${{ github.run_id }}"
+        url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+    - name: Deploy my great app
+      run: |
+        echo "Deployment in progress..."
+        sleep 300s
+        echo "DEPLOY_DONE_TIMESTAMP=$(date +'%s')" >> $GITHUB_ENV
+        echo "Deployment has finished."
+      shell: bash
+    - name: Honeycomb End Marker
+      if: always()
+      uses: pawelros/gha-honeycomb-marker@v1.0.0
+      with:
+        api-key: ${{secrets.HONEYCOMB_API_KEY}}
+        operation: "update"
+        id: ${{steps.start_marker.outputs.id}}
+        dataset: "my-dataset"
+        type: ${{job.status == 'success' && 'deployment_ok' || deployment_failed }}"
+        message: ${{job.status == 'success' && format('Deployment {0} [OK]', github.run_id) || format('Deployment {0} [FAILED]', github.run_id)}}"
         end-time: ${{env.DEPLOY_DONE_TIMESTAMP}}
 ```
 
