@@ -45,7 +45,20 @@ try {
         }
     }
 
-    var self = this;
+    const validateResponse = (error) => {
+        console.log(this.treat_missing_dataset_as_warning)
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+
+        if (error.response.status == 404 && error.response.data == '{ error: \'dataset not found\' }'
+            && this.treat_missing_dataset_as_warning) {
+            core.notice(`Dataset ${this.requestDto.dataset} not found.`)
+            return;
+        }
+
+        core.setFailed(error.response.data.error);
+    }
 
     switch (operation.toLowerCase()) {
         case 'create':
@@ -61,20 +74,7 @@ try {
                     core.setOutput('start-time', response.data.start_time);
                     core.setOutput('end-time', response.data.start_time);
                 })
-                .catch(function (error) {
-                    console.log(self.treat_missing_dataset_as_warning)
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-
-                    if (error.response.status == 404 && error.response.data == '{ error: \'dataset not found\' }'
-                        && self.treat_missing_dataset_as_warning) {
-                        core.notice(`Dataset ${requestDto.dataset} not found.`)
-                        return;
-                    }
-
-                    core.setFailed(error.response.data.error);
-                });
+                .catch(validateResponse);
             break;
         case 'update':
             if (!requestDto.id) throw new Error('Honeycomb marker `id` is required for update operation type.')
@@ -92,19 +92,7 @@ try {
                     core.setOutput('start-time', response.data.start_time);
                     core.setOutput('end-time', response.data.start_time);
                 })
-                .catch(function (error) {
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-
-                    if (error.response.status == 404 && error.data == '{ error: \'dataset not found\' }'
-                        && treat_missing_dataset_as_warning) {
-                        core.notice(`Dataset ${requestDto.dataset} not found.`)
-                        return;
-                    }
-
-                    core.setFailed(error.response.data.error);
-                });
+                .catch(validateResponse);
             break;
         default:
             throw new Error(`Operation ${operation} is not supported.`);
