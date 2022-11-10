@@ -46,23 +46,7 @@ try {
     }
 
     this.treat_missing_dataset_as_warning = treat_missing_dataset_as_warning;
-    this.requestDto =requestDto;
-
-    console.log(this);
-
-    const processError = (error) => {
-        console.log(error.response.data.error);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-
-        if (error.response.status == 404 && error.response.data.error == 'dataset not found'
-            && this.treat_missing_dataset_as_warning) {
-            core.notice(`Dataset ${this.requestDto.dataset} not found.`)
-            return;
-        }
-
-        core.setFailed(error.response.data.error);
-    }
+    this.requestDto = requestDto;
 
     const processResponse = (response) => {
         console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${JSON.stringify(response.data)}`);
@@ -74,6 +58,20 @@ try {
         core.setOutput('message', response.data.message);
         core.setOutput('start-time', response.data.start_time);
         core.setOutput('end-time', response.data.start_time);
+    }
+
+    const processError = (error) => {
+        console.log(error.response.data.error);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+
+        if (error.response.status == 404 && error.response.data.error == 'dataset not found'
+            && this.treat_missing_dataset_as_warning) {
+            core.warning(`Dataset ${this.requestDto.dataset} not found.`)
+            return;
+        }
+
+        core.setFailed(error.response.data.error);
     }
 
     switch (operation.toLowerCase()) {
