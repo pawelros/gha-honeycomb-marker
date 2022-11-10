@@ -66,7 +66,7 @@ try {
                     console.log(error.response.status);
                     console.log(error.response.headers);
 
-                    if (error.response.status == 404 && error.data == '{ error: \'dataset not found\' }'
+                    if (error.response.status == 404 && error.response.data == '{ error: \'dataset not found\' }'
                         && treat_missing_dataset_as_warning) {
                         core.notice(`Dataset ${requestDto.dataset} not found.`)
                         return;
