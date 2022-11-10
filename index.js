@@ -62,12 +62,13 @@ try {
                     core.setOutput('end-time', response.data.start_time);
                 })
                 .catch(function (error) {
+                    console.log(self.treat_missing_dataset_as_warning)
                     console.log(error.response.data);
                     console.log(error.response.status);
                     console.log(error.response.headers);
 
                     if (error.response.status == 404 && error.response.data == '{ error: \'dataset not found\' }'
-                        && treat_missing_dataset_as_warning) {
+                        && self.treat_missing_dataset_as_warning) {
                         core.notice(`Dataset ${requestDto.dataset} not found.`)
                         return;
                     }
