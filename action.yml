@@ -17,7 +17,7 @@ inputs:
     description: 'Honeycomb marker id for update and delete operation.'
     required: false
   type:
-    description: 'A string grouping similar Markers, eg ‘deploys’. All Markers of the same type will appear in the same color on the graph.'
+    description: 'A string grouping similar Markers, eg "deploys". All Markers of the same type will appear in the same color on the graph.'
     required: true
   message:
     description: 'A string describing this specific Marker. This string will appear above the Marker line on a graph.'
@@ -30,7 +30,10 @@ inputs:
     required: false
   url:
     description: 'A target for the Marker. If you click on the Marker text, it will take you to this URL. For a deploy, this field might be a link to the build system showing the build log for the version that was deployed.'
-  
+  treat-missing-dataset-as-warning:
+    description: 'If set to `true`, a `404 dataset not found` error returned by Honeycomb API will be treated as warning, generate a warning annotation and return exit code 0 instead of an error. Defaults to `false`.'
+    default: 'false'
+
 outputs:
   id:
     description: 'Marker ID'

@@ -10,8 +10,9 @@ class HoneyCombMarkerRequestDto {
     start_time;
     end_time;
     url;
+    treat_missing_dataset_as_warning;
 
-    constructor(id, dataset, type, message, startTime, endTime, url) {
+    constructor(id, dataset, type, message, startTime, endTime, url, treat_missing_dataset_as_warning) {
         this.id = id || null;
         this.dataset = dataset || null;
         this.type = type || null;
@@ -19,6 +20,7 @@ class HoneyCombMarkerRequestDto {
         this.start_time = parseInt(startTime) || null;
         this.end_time = parseInt(endTime) || null;
         this.url = url || null;
+        this.treat_missing_dataset_as_warning = treat_missing_dataset_as_warning || false;
     }
 }
 
@@ -32,6 +34,7 @@ try {
     const startTime = core.getInput('start-time');
     const endTime = core.getInput('end-time');
     const url = core.getInput('url');
+    const treat_missing_dataset_as_warning = core.getBooleanInput('treat-missing-dataset-as-warning');
 
     const requestDto = new HoneyCombMarkerRequestDto(id, dataset, type, message, startTime, endTime, url);
 
@@ -63,6 +66,12 @@ try {
                     console.log(error.response.status);
                     console.log(error.response.headers);
 
+                    if (error.response.status == 404 && error.data == '{ error: \'dataset not found\' }'
+                        && treat_missing_dataset_as_warning) {
+                        core.notice(`Dataset ${requestDto.dataset} not found.`)
+                        return;
+                    }
+
                     core.setFailed(error.response.data.error);
                 });
             break;
@@ -86,6 +95,12 @@ try {
                     console.log(error.response.data);
                     console.log(error.response.status);
                     console.log(error.response.headers);
+
+                    if (error.response.status == 404 && error.data == '{ error: \'dataset not found\' }'
+                        && treat_missing_dataset_as_warning) {
+                        core.notice(`Dataset ${requestDto.dataset} not found.`)
+                        return;
+                    }
 
                     core.setFailed(error.response.data.error);
                 });

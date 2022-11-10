@@ -94,5 +94,20 @@ Development in progress. Supported operations:
 ![Advanced marker](advanced_marker.png)
 
 
+## Input parameters
+
+| Name        | Required           | Description  |
+| ------------- |:-------------:| -----:|
+| api-key      | true | Honeycomb API Key. The API key must have the Manage Markers permission. |
+| dataset      | true |   Honecomb dataset |
+| operation    | true |  one of `Create`, `Read`, `Update`, `Delete` |
+| id           | true if operation is `Update` or `Delete`, otherwise false | Honeycomb marker id for update and delete operation.|
+| type         | true | A string grouping similar Markers, eg "deploys". All Markers of the same type will appear in the same color on the graph. |
+| message      | true | A string describing this specific Marker. This string will appear above the Marker line on a graph. |
+| start-time   | false | Indicates the time the Marker should be placed. If missing, defaults to the time the request arrives at the API. Expressed in Unix Time, aka seconds since the epoch. |
+| end-time     | false | Specifying end time will allow you to record a Marker representing a time range, such as a 5 minute deploy. This range will be highlighted when rendering a graph. Expressed in Unix Time, aka seconds since the epoch. |
+| url |        | false | A target for the Marker. If you click on the Marker text, it will take you to this URL. For a deploy, this field might be a link to the build system showing the build log for the version that was deployed. |
+| treat-missing-dataset-as-warning | false | If set to `true`, a `404 dataset not found` error returned by Honeycomb API will be treated as warning, generate a warning annotation and return exit code 0 instead an error. |
+
 
 Action is written in JavaScript as it simplifies the action code and executes faster than a Docker container action, see more [here](https://docs.github.com/en/actions/creating-actions/about-custom-actions#javascript-actions).
