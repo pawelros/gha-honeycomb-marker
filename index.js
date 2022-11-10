@@ -67,7 +67,7 @@ try {
 
         if (error.response.status == 404 && error.response.data.error == 'dataset not found'
             && this.treat_missing_dataset_as_warning) {
-            core.warning(`Dataset ${this.requestDto.dataset} not found.`)
+            core.warning(`Dataset '${this.requestDto.dataset}' not found.`)
             return;
         }
 
