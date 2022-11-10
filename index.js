@@ -51,6 +51,7 @@ try {
     const processError = (error) => {
         console.log(this.treat_missing_dataset_as_warning)
         console.log(error.response.data);
+        console.log(error.response.data.error);
         console.log(error.response.status);
         console.log(error.response.headers);
         console.log(error.response.status == 404);
