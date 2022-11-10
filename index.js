@@ -45,6 +45,7 @@ try {
         }
     }
 
+    this.treat_missing_dataset_as_warning = treat_missing_dataset_as_warning;
     console.log(this);
 
     const processError = (error) => {
