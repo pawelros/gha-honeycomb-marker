@@ -45,7 +45,7 @@ try {
         }
     }
 
-    const validateResponse = (error) => {
+    const processError = (error) => {
         console.log(this.treat_missing_dataset_as_warning)
         console.log(error.response.data);
         console.log(error.response.status);
@@ -60,39 +60,31 @@ try {
         core.setFailed(error.response.data.error);
     }
 
+    const processResponse = (response) => {
+        console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${JSON.stringify(response.data)}`);
+        console.log(`${response.status} ${response.statusText}`);
+
+        core.setOutput('id', response.data.id);
+        core.setOutput('created-at', response.data.created_at);
+        core.setOutput('updated-at', response.data.updated_at);
+        core.setOutput('message', response.data.message);
+        core.setOutput('start-time', response.data.start_time);
+        core.setOutput('end-time', response.data.start_time);
+    }
+
     switch (operation.toLowerCase()) {
         case 'create':
             axios.post(`https://api.honeycomb.io/1/markers/${dataset}`, requestDto, axios_config)
-                .then(function (response) {
-                    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${JSON.stringify(response.data)}`);
-                    console.log(`${response.status} ${response.statusText}`);
-
-                    core.setOutput('id', response.data.id);
-                    core.setOutput('created-at', response.data.created_at);
-                    core.setOutput('updated-at', response.data.updated_at);
-                    core.setOutput('message', response.data.message);
-                    core.setOutput('start-time', response.data.start_time);
-                    core.setOutput('end-time', response.data.start_time);
-                })
-                .catch(validateResponse);
+                .then(processResponse)
+                .catch(processError);
             break;
         case 'update':
             if (!requestDto.id) throw new Error('Honeycomb marker `id` is required for update operation type.')
             if (!requestDto.dataset) throw new Error('Honeycomb marker `dataset` is required for update operation type.')
 
             axios.put(`https://api.honeycomb.io/1/markers/${dataset}/${requestDto.id}`, requestDto, axios_config)
-                .then(function (response) {
-                    console.log(`Marker ${JSON.stringify(requestDto)}. Response: ${JSON.stringify(response.data)}`);
-                    console.log(`${response.status} ${response.statusText}`);
-
-                    core.setOutput('id', response.data.id);
-                    core.setOutput('created-at', response.data.created_at);
-                    core.setOutput('updated-at', response.data.updated_at);
-                    core.setOutput('message', response.data.message);
-                    core.setOutput('start-time', response.data.start_time);
-                    core.setOutput('end-time', response.data.start_time);
-                })
-                .catch(validateResponse);
+                .then(processResponse)
+                .catch(processError);
             break;
         default:
             throw new Error(`Operation ${operation} is not supported.`);
